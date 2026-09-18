@@ -184,9 +184,11 @@ public static class KawaiiPhysicsLegacyPorter
 
         if (!HasLegacyKawaiiSettings(node) && !hasChains) return false;
 
-        StructPropertyData chain = HasLegacyKawaiiSettings(node)
-            ? BuildChainFromLegacyNode(asset, node, options)
-            : RebuildExistingChain(asset, chains.Value[0], options);
+        // Current assets can retain deprecated node-level defaults. Once Chains
+        // exists, its bone references and tuned settings are authoritative.
+        StructPropertyData chain = hasChains
+            ? RebuildExistingChain(asset, chains.Value[0], options)
+            : BuildChainFromLegacyNode(asset, node, options);
 
         if (chain == null) return false;
         if (chains == null)
